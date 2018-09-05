@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, Button, Text, TextInput, Image } from 'react-native';
-
 import firebase from 'react-native-firebase';
 
 const successImageUri = 'https://cdn.pixabay.com/photo/2015/06/09/16/12/icon-803718_1280.png';
@@ -19,24 +18,25 @@ export default class PhoneAuthTest extends Component {
   }
 
   componentDidMount() {
-    this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.setState({ user: user.toJSON() });
-      } else {
-        // User has been signed out, reset the state
-        this.setState({
-          user: null,
-          message: '',
-          codeInput: '',
-          phoneNumber: '+92',
-          confirmResult: null,
-        });
-      }
-    });
+      this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          this.setState({ user: user.toJSON() });
+        } else {
+          // User has been signed out, reset the state
+          this.setState({
+            user: null,
+            message: '',
+            codeInput: '',
+            phoneNumber: '+92',
+            confirmResult: null,
+          });
+        }
+      });
+    
   }
 
   componentWillUnmount() {
-     if (this.unsubscribe) this.unsubscribe();
+    if (this.unsubscribe) this.unsubscribe();
   }
 
   signIn = () => {
@@ -45,11 +45,11 @@ export default class PhoneAuthTest extends Component {
 
     firebase.auth().signInWithPhoneNumber(phoneNumber)
       .then(confirmResult => this.setState({ confirmResult, message: 'Code has been sent!' }))
-      .catch(error =>{
+      .catch(error => {
         console.log(error)
-         this.setState({ message: `Sign In With Phone Number Error: ${error.message}` })
+        this.setState({ message: `Sign In With Phone Number Error: ${error.message}` })
       });
-      
+
   };
 
   confirmCode = () => {
@@ -67,10 +67,10 @@ export default class PhoneAuthTest extends Component {
   signOut = () => {
     firebase.auth().signOut();
   }
-  
+
   renderPhoneNumberInput() {
-   const { phoneNumber } = this.state;
-      
+    const { phoneNumber } = this.state;
+
     return (
       <View style={{ padding: 25 }}>
         <Text>Enter phone number:</Text>
@@ -85,20 +85,20 @@ export default class PhoneAuthTest extends Component {
       </View>
     );
   }
-  
+
   renderMessage() {
     const { message } = this.state;
-  
+
     if (!message.length) return null;
-  
+
     return (
       <Text style={{ padding: 5, backgroundColor: '#000', color: '#fff' }}>{message}</Text>
     );
   }
-  
+
   renderVerificationCodeInput() {
     const { codeInput } = this.state;
-  
+
     return (
       <View style={{ marginTop: 25, padding: 25 }}>
         <Text>Enter verification code below:</Text>
@@ -118,13 +118,13 @@ export default class PhoneAuthTest extends Component {
     const { user, confirmResult } = this.state;
     return (
       <View style={{ flex: 1 }}>
-        
+
         {!user && !confirmResult && this.renderPhoneNumberInput()}
-        
+
         {this.renderMessage()}
-        
+
         {!user && confirmResult && this.renderVerificationCodeInput()}
-        
+
         {user && (
           <View
             style={{
@@ -145,3 +145,42 @@ export default class PhoneAuthTest extends Component {
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ * @flow
+ */
+
+// import React, { Component } from 'react';
+// import {
+//   Platform,
+//   StyleSheet,
+//   Text,
+//   View
+// } from 'react-native';
+
+
+// export default class App extends Component {
+
+//   render() {
+//     return (
+//       <View>
+//         <Text>
+//           Hello world
+//           </Text>
+//       </View>
+//     );
+//   }
+// }
+
+
